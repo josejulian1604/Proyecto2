@@ -1,4 +1,4 @@
-public abstract class Mapeable {
+public abstract class Mapeable implements IObservador{
     protected int xPos;
     protected int yPos;
 

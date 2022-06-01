@@ -4,16 +4,17 @@ public class MapeableFactory {
     
     MapeableFactory(){}
 
-    Mapeable createMapeable(int type) {
-        switch (type) {
+    Player createPlayer() {
+        return new Player();
+    }
+    
+    Mapeable createMapeable(int type, int x, int y) {
+        switch (type) {   
             case 0:
-                return new Player();
-        
-            case 1:
-                return new Aliado();
+                return new Aliado(x, y);
             
             default:
-                return new Enemigo();
+                return new Enemigo(x, y);
         }
     }
 
