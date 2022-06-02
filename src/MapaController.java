@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class MapaController {
     MapeableFactory factory;
     MapaModel data;
@@ -13,8 +15,10 @@ public class MapaController {
     }
 
     public void createMapeable(int typeMapeable) {
-        int x = 0; // NECESITA CAMBIOS: FORMAR EL RANDOM Y VERIFICAR QUE LA POSICION NO
-        int y = 0; // HAYA SIDO TOMADA
+        int x = new Random().nextInt(); // NECESITA CAMBIOS: FORMAR EL RANDOM Y VERIFICAR QUE LA POSICION NO
+        int y = new Random().nextInt(); // HAYA SIDO TOMADA
+
+        
         data.objetosMapeables.add(factory.createMapeable(typeMapeable, x, y));
     }
 
@@ -33,4 +37,6 @@ public class MapaController {
             m.move();
         }
     }
+    
+    
 }

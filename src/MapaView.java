@@ -17,7 +17,6 @@ public class MapaView extends JFrame implements KeyListener{
         this.setLayout(null);
         panel = new JPanel();
         boton = new JButton();
-
         boton.setBounds(0, 0, CASILLA_WIDTH, CASILLA_HEIGHT);
         boton.setText("Boton");
         panel.add(boton);
