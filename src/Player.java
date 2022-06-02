@@ -7,8 +7,11 @@ public class Player{
     public int direction;
     private ArrayList<Mapeable> _observadores;
 
-    public Player() {
+    public Player(int x, int y) {
         _observadores = new ArrayList<Mapeable>();
+        xPos = x;
+        yPos = y;
+        vida = 10;
     }
 
     public void agregarObservador(Mapeable m) {
