@@ -17,11 +17,11 @@ public class MapaView extends JFrame implements KeyListener{
         this.setLayout(null);
         panel = new JPanel();
         boton = new JButton();
+
         boton.setBounds(0, 0, CASILLA_WIDTH, CASILLA_HEIGHT);
         boton.setText("Boton");
         panel.add(boton);
-        panel.addKeyListener(this);
-        panel.setFocusable(true);
+        this.addKeyListener(this);
         panel.setLayout(null);
         panel.setSize(WIDTH, HEIGHT);
         panel.setBackground(Color.darkGray);
@@ -41,17 +41,15 @@ public class MapaView extends JFrame implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getExtendedKeyCode() == KeyEvent.VK_UP){
-            boton.setLocation(boton.getX(), boton.getY() - 5);
-        }
-        if (e.getExtendedKeyCode() == KeyEvent.VK_DOWN) {
-            boton.setLocation(boton.getX(), boton.getY() + 5);
-        }
-        if (e.getExtendedKeyCode() == KeyEvent.VK_LEFT) {
-            boton.setLocation(boton.getX() - 5, boton.getY());
-        }
-        if (e.getExtendedKeyCode() == KeyEvent.VK_RIGHT) {
-            boton.setLocation(boton.getX() + 5, boton.getY());
+        switch(e.getKeyCode()) {
+            case 37:boton.setLocation(boton.getX() - 10, boton.getY());
+                break;
+            case 38:boton.setLocation(boton.getX(), boton.getY() - 10);
+                break;
+            case 39:boton.setLocation(boton.getX() + 10, boton.getY());
+                break;
+            case 40:boton.setLocation(boton.getX(), boton.getY() + 10);
+                break;
         }
     }
 
