@@ -1,7 +1,4 @@
 public class Aliado extends Mapeable {
-    private int playerX;
-    private int playerY;
-
     public Aliado(int x, int y, String name) {
         xPos = x;
         yPos = y;

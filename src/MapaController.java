@@ -8,10 +8,11 @@ public class MapaController {
         factory = new MapeableFactory();
         createPlayer(x, y);
         spawnMapeables();
-        printPositions();
+        //printPositions();
         data = new MapaModel();
     }
     
+    // CREATION METHODS ####################################################
     public void createPlayer(int x, int y) {
         MapaModel.player = factory.createPlayer(x, y);
         MapaModel.objetosMapeables = factory.createArrayList();
@@ -29,9 +30,12 @@ public class MapaController {
 
     public void createMapeable(int typeMapeable, String name) {
         verifyPositions();
-        MapaModel.objetosMapeables.add(factory.createMapeable(typeMapeable, MapaModel.X, MapaModel.Y, name));
+        Mapeable m = factory.createMapeable(typeMapeable, MapaModel.X, MapaModel.Y, name);
+        MapaModel.objetosMapeables.add(m);
+        MapaModel.player.agregarObservador(m);
     }
 
+    // POSITION VERIFICATION #######################################################################
     public void verifyPositions() {
         int x = new Random().nextInt(MapaView.CASILLAS - 1); // NECESITA CAMBIOS: FORMAR EL RANDOM Y VERIFICAR QUE LA POSICION NO
         int y = new Random().nextInt(MapaView.CASILLAS - 1); // HAYA SIDO TOMADA
@@ -50,13 +54,24 @@ public class MapaController {
         MapaModel.Y = y;
     }
 
+    // MOVING METHODS #####################################################################
+    public static void movePlayer(boolean upDown, int moveSize) {
+        if(upDown) {
+            MapaModel.player.yPos += moveSize;
+            MapaModel.player.notificarObservadores();
+        }else{
+            MapaModel.player.xPos += moveSize;
+            MapaModel.player.notificarObservadores();
+        }
+    }
+
     public void move() {
         for(Mapeable m : MapaModel.objetosMapeables) {
             m.move();
         }
     }
 
-    public void printPositions() {
+    public static void printPositions() {
         System.out.println("Player:  X: " + MapaModel.player.xPos + " Y: " + MapaModel.player.yPos);
         for(Mapeable m : MapaModel.objetosMapeables) {
             System.out.println(m.name + " X: " + m.xPos + " Y: " + m.yPos);

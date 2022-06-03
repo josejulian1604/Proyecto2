@@ -7,6 +7,7 @@ public class MapaModel {
     public static Player player;
     public static ArrayList<Mapeable> objetosMapeables;
     public static MapaView mapa;
+    public static int turno;
     
     public MapaModel() {
         mapa = new MapaView();
