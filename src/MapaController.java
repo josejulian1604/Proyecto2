@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MapaController {
-    MapeableFactory factory;
-    MapaModel data;
+    static MapeableFactory factory;
+    static MapaModel data;
 
     MapaController(int x, int y) {
         factory = new MapeableFactory();
@@ -28,15 +29,22 @@ public class MapaController {
         }
     }
 
-    public void createMapeable(int typeMapeable, String name) {
+    public static void createMapeable(int typeMapeable, String name) {
         verifyPositions();
         Mapeable m = factory.createMapeable(typeMapeable, MapaModel.X, MapaModel.Y, name);
         MapaModel.objetosMapeables.add(m);
         MapaModel.player.agregarObservador(m);
     }
 
+    public static void addMapeable() {
+        if(MapaModel.turno % 5 == 0) { // ENEMIGO
+            createMapeable(1, "x");
+            MapaModel.mapa.addMapeable();
+        }
+    }
+
     // POSITION VERIFICATION #######################################################################
-    public void verifyPositions() {
+    public static void verifyPositions() {
         int x = new Random().nextInt(MapaView.CASILLAS - 1); // NECESITA CAMBIOS: FORMAR EL RANDOM Y VERIFICAR QUE LA POSICION NO
         int y = new Random().nextInt(MapaView.CASILLAS - 1); // HAYA SIDO TOMADA
 
@@ -55,29 +63,36 @@ public class MapaController {
     }
 
     // MOVING METHODS #####################################################################
-    public static void movePlayer(boolean upDown, int moveSize, int direction) {
+    public static ArrayList<Integer> movePlayer(boolean upDown, int moveSize, int direction) {
+        ArrayList<Integer> indices;
+        MapaModel.turno++;
         if(upDown) {
-            interactuar();
+            indices = interactuar();
             MapaModel.player.yPos += moveSize;
             MapaModel.player.notificarObservadores();
+            addMapeable();
         }else{
-            interactuar();
+            indices = interactuar();
             MapaModel.player.xPos += moveSize;
             MapaModel.player.notificarObservadores();
+            addMapeable();
         }
         MapaModel.player.direction = direction;
+        return indices;
     }
 
-    /*public void move() {
-        for(Mapeable m : MapaModel.objetosMapeables) {
-            m.move();
+    public static ArrayList<Integer> interactuar() {
+        ArrayList<Integer> indices = new ArrayList<Integer>();
+        for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
+            Mapeable m = MapaModel.objetosMapeables.get(i);
+            if(m.interactuar(MapaModel.player)) {
+                MapaModel.player.eliminarObservador(m);
+                MapaModel.objetosMapeables.remove(m);
+                MapaModel.mapa.removeButton(i);
+                indices.add(i);
+            }
         }
-    }*/
-
-    public static void interactuar() {
-        for(Mapeable m : MapaModel.objetosMapeables) {
-            m.interactuar(MapaModel.player);
-        }
+        return indices;
     }
 
     public static int atacarEnemigo() {

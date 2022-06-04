@@ -10,6 +10,7 @@ public class MapaModel {
     public static int turno;
     
     public MapaModel() {
+        turno = 0;
         mapa = new MapaView();
     }
 }

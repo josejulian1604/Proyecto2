@@ -66,6 +66,26 @@ public class MapaView extends JFrame implements KeyListener{
         }
     }
 
+    public void addMapeable() {
+        int xSize = WIDTH / CASILLAS;
+        int ySize = HEIGHT / CASILLAS;
+        int index = MapaModel.objetosMapeables.size() - 1;
+        Mapeable m = MapaModel.objetosMapeables.get(index);
+        JButton mapeable = new JButton();
+        mapeable.setBounds(m.xPos * xSize, m.yPos * ySize, xSize, ySize);
+        mapeable.setText(m.name);
+        if(m.getClass().getName() == "Aliado") { 
+            mapeable.setBackground(Color.GREEN);
+            mapeable.setVisible(true);
+        }else {
+            mapeable.setBackground(Color.RED);
+            mapeable.setVisible(true);
+        }
+        botonesMapeables.add(mapeable);
+        panel.add(mapeable);
+        panel.repaint();
+    }
+
     public void removeButton(int indice) {
         if(indice != -1) {
             panel.remove(botonesMapeables.remove(indice));
@@ -97,28 +117,32 @@ public class MapaView extends JFrame implements KeyListener{
                 MapaController.movePlayer(false, -1, 0);
                 playerButton.setLocation(playerButton.getX() - WIDTH / CASILLAS, playerButton.getY());
                 moveMapeables();
-                //MapaController.printPositions();
+                //indexButtons(indices);
+                MapaController.printPositions();
                 refreshText();
                 break;
             case 38: // flecha arriba
                 MapaController.movePlayer(true, -1, 1);
                 playerButton.setLocation(playerButton.getX(), playerButton.getY() - HEIGHT / CASILLAS);
                 moveMapeables();
-                //MapaController.printPositions();
+                //indexButtons(indices);
+                MapaController.printPositions();
                 refreshText();
                 break;
             case 39: // flecha derecha
                 MapaController.movePlayer(false, 1, 2);
                 playerButton.setLocation(playerButton.getX() + WIDTH / CASILLAS, playerButton.getY());
                 moveMapeables();
-                //MapaController.printPositions();
+                //indexButtons(indices);
+                MapaController.printPositions();
                 refreshText();
                 break;
             case 40: // flecha abajo
                 MapaController.movePlayer(true, 1, 3);
                 playerButton.setLocation(playerButton.getX(), playerButton.getY() + HEIGHT / CASILLAS);
                 moveMapeables();
-                //MapaController.printPositions();
+                //indexButtons(indices);
+                MapaController.printPositions();
                 refreshText();
                 break;
         }
@@ -130,5 +154,11 @@ public class MapaView extends JFrame implements KeyListener{
     public void refreshText() {
         playerButton.setText("" + MapaModel.player.vida);
 
+    }
+
+    public void print() {
+        for(int i = 0; i < botonesMapeables.size(); i++) {
+            System.out.println(botonesMapeables.get(i).getText());
+        }
     }
 }
