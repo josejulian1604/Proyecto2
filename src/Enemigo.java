@@ -5,6 +5,7 @@ public class Enemigo extends Mapeable {
         yPos = y;
         this.name = name;
         currentMoveX = false;
+        vida = 1;
     }
     
     public void move(){
@@ -37,9 +38,17 @@ public class Enemigo extends Mapeable {
         }
     }
 
+    public boolean interactuar(Player p) {
+        if(xPos == playerX & yPos == playerY) {
+            p.vida--;
+            return true;
+        }return false;
+    }
+
     @Override
     public void actualizar(int newX, int newY) {
         playerX = newX;
         playerY = newY;
+        move();
     }
 }

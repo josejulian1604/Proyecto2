@@ -4,6 +4,8 @@ public abstract class Mapeable implements IObservador{
     protected String name;
     protected int playerX;
     protected int playerY;
+    protected int vida;
 
     public abstract void move();
+    public abstract boolean interactuar(Player p);
 }

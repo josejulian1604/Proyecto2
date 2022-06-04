@@ -55,20 +55,39 @@ public class MapaController {
     }
 
     // MOVING METHODS #####################################################################
-    public static void movePlayer(boolean upDown, int moveSize) {
+    public static void movePlayer(boolean upDown, int moveSize, int direction) {
         if(upDown) {
+            interactuar();
             MapaModel.player.yPos += moveSize;
             MapaModel.player.notificarObservadores();
         }else{
+            interactuar();
             MapaModel.player.xPos += moveSize;
             MapaModel.player.notificarObservadores();
         }
+        MapaModel.player.direction = direction;
     }
 
-    public void move() {
+    /*public void move() {
         for(Mapeable m : MapaModel.objetosMapeables) {
             m.move();
         }
+    }*/
+
+    public static void interactuar() {
+        for(Mapeable m : MapaModel.objetosMapeables) {
+            m.interactuar(MapaModel.player);
+        }
+    }
+
+    public static int atacarEnemigo() {
+        MapaModel.player.atacar();
+        for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
+            if(MapaModel.objetosMapeables.get(i).vida == 0) {
+                MapaModel.objetosMapeables.remove(MapaModel.objetosMapeables.get(i));
+                return i;
+            }
+        }return -1;
     }
 
     public static void printPositions() {

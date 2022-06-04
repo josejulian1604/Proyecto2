@@ -8,7 +8,7 @@ import java.awt.Color;
 public class MapaView extends JFrame implements KeyListener{
     public final int HEIGHT = 800;
     public final int WIDTH = 1000;
-    public static final int CASILLAS = 25;
+    public static final int CASILLAS = 20;
     public final int CASILLA_HEIGHT = HEIGHT / CASILLAS;
     public final int CASILLA_WIDTH = WIDTH / CASILLAS;
     public JButton playerButton;
@@ -20,6 +20,7 @@ public class MapaView extends JFrame implements KeyListener{
         panel = new JPanel();
         playerButton = new JButton();
         this.addKeyListener(this);
+        this.setFocusable(true);
         panel.setLayout(null);
         panel.setSize(WIDTH, HEIGHT);
         panel.setBackground(Color.darkGray);
@@ -33,7 +34,7 @@ public class MapaView extends JFrame implements KeyListener{
         this.add(panel, 0, 0);
     }
 
-    //SPAWN METHODS###########################################################
+    //SPAWN & REMOVE METHODS###########################################################
     public void spawnPlayer() {
         int xSize = WIDTH / CASILLAS;
         int ySize = HEIGHT / CASILLAS;
@@ -65,25 +66,18 @@ public class MapaView extends JFrame implements KeyListener{
         }
     }
 
+    public void removeButton(int indice) {
+        if(indice != -1) {
+            panel.remove(botonesMapeables.remove(indice));
+            panel.repaint();
+        }
+    }
+
     //MOVE METHODS######################################################################
     public void moveMapeables() {
-        int botonX;
-        int botonY;
-        for(int i = 0; i < MapaModel.OBJECTS; i++) {
+        for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
             Mapeable m = MapaModel.objetosMapeables.get(i);
-            int lastX = m.xPos;
-            int lastY = m.yPos;
-            botonX = botonesMapeables.get(i).getX();
-            botonY = botonesMapeables.get(i).getY();
-            m.move();
-            if(lastX > m.xPos)
-                botonesMapeables.get(i).setLocation(botonX - WIDTH / CASILLAS, botonY);
-            else if(lastX < m.xPos)
-                botonesMapeables.get(i).setLocation(botonX + WIDTH / CASILLAS, botonY);
-            else if(lastY > m.yPos)
-                botonesMapeables.get(i).setLocation(botonX, botonY - HEIGHT / CASILLAS);
-            else if(lastY < m.yPos)
-                botonesMapeables.get(i).setLocation(botonX, botonY + HEIGHT / CASILLAS);
+            botonesMapeables.get(i).setLocation(m.xPos * (WIDTH / CASILLAS), m.yPos * (HEIGHT / CASILLAS));
         }
     }
 
@@ -92,37 +86,49 @@ public class MapaView extends JFrame implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
+        int indice;
         switch(e.getKeyCode()) {
             case 32:
-                // CODE
+                indice = MapaController.atacarEnemigo();
+                removeButton(indice);
+                System.out.println("Direction: " + MapaModel.player.direction);
                 break;
             case 37: // flecha izquierda
-                MapaController.movePlayer(false, -1);
+                MapaController.movePlayer(false, -1, 0);
                 playerButton.setLocation(playerButton.getX() - WIDTH / CASILLAS, playerButton.getY());
                 moveMapeables();
                 //MapaController.printPositions();
+                refreshText();
                 break;
             case 38: // flecha arriba
-                MapaController.movePlayer(true, -1);
+                MapaController.movePlayer(true, -1, 1);
                 playerButton.setLocation(playerButton.getX(), playerButton.getY() - HEIGHT / CASILLAS);
                 moveMapeables();
                 //MapaController.printPositions();
+                refreshText();
                 break;
             case 39: // flecha derecha
-                MapaController.movePlayer(false, 1);
+                MapaController.movePlayer(false, 1, 2);
                 playerButton.setLocation(playerButton.getX() + WIDTH / CASILLAS, playerButton.getY());
                 moveMapeables();
                 //MapaController.printPositions();
+                refreshText();
                 break;
             case 40: // flecha abajo
-                MapaController.movePlayer(true, 1);
+                MapaController.movePlayer(true, 1, 3);
                 playerButton.setLocation(playerButton.getX(), playerButton.getY() + HEIGHT / CASILLAS);
                 moveMapeables();
                 //MapaController.printPositions();
+                refreshText();
                 break;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    public void refreshText() {
+        playerButton.setText("" + MapaModel.player.vida);
+
+    }
 }

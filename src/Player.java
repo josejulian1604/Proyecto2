@@ -27,4 +27,49 @@ public class Player{
             m.actualizar(xPos, yPos);
         }
     }
+
+    public void atacar() {
+        Mapeable m;
+        if(direction == 0) { // izquierda
+            for(int i = 0; i < _observadores.size(); i++) {
+                m = _observadores.get(i);
+                if(m.getClass().getName() == "Enemigo") {
+                    if(xPos - 1 == m.xPos & yPos == m.yPos) {
+                        m.vida = 0;
+                        _observadores.remove(m);
+                    }
+                }
+            }
+        }else if(direction == 1) { // arriba
+            for(int i = 0; i < _observadores.size(); i++) {
+                m = _observadores.get(i);
+                if(m.getClass().getName() == "Enemigo") {
+                    if(xPos == m.xPos & yPos - 1 == m.yPos) {
+                        m.vida = 0;
+                        _observadores.remove(m);
+                    }
+                }
+            }
+        }else if(direction == 2) { // derecha
+            for(int i = 0; i < _observadores.size(); i++) {
+                m = _observadores.get(i);
+                if(m.getClass().getName() == "Enemigo") {
+                    if(xPos + 1 == m.xPos & yPos == m.yPos) {
+                        m.vida = 0;
+                        _observadores.remove(m);
+                    }
+                }
+            }
+        }else { // abajo
+            for(int i = 0; i < _observadores.size(); i++) {
+                m = _observadores.get(i);
+                if(m.getClass().getName() == "Enemigo") {
+                    if(xPos == m.xPos & yPos + 1 == m.yPos) {
+                        m.vida = 0;
+                        _observadores.remove(m);
+                    }
+                }
+            }
+        }
+    }
 }
