@@ -32,10 +32,10 @@ public class MapaController {
 
     public static void createMapeable(int typeMapeable, String name) {
         verifyPositions();
-        System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWW");
         Mapeable m = factory.createMapeable(typeMapeable, MapaModel.X, MapaModel.Y, name);
         MapaModel.objetosMapeables.add(m);
         MapaModel.player.agregarObservador(m);
+        
     }
 
     public static void addMapeable() {
@@ -43,7 +43,9 @@ public class MapaController {
             createMapeable(1, "x");
             MapaModel.mapa.addMapeable();
             if(MapaModel.aliados < MapaModel.OBJECTS / 2) {
+                System.out.println("aliados: "+MapaModel.aliados);
                 createMapeable(0, "10");
+                MapaModel.mapa.addMapeable();
             }
         }
     }
@@ -53,16 +55,20 @@ public class MapaController {
         int x = new Random().nextInt(MapaView.CASILLAS - 1); 
         int y = new Random().nextInt(MapaView.CASILLAS - 1); 
 
+        //System.out.println("Voy aqui");
         if(x == MapaModel.player.xPos & y == MapaModel.player.yPos) {
             verifyPositions();
             return;
         }
+        //System.out.println("Llego al for");
         for (Mapeable m : MapaModel.objetosMapeables) {
             if(x == m.xPos & y == m.yPos) {
                 verifyPositions();
                 return;
             }
         }
+        System.out.println("Voy aqui");
+        System.out.println("X: " + x+" Y: "+y);
         MapaModel.X = x;
         MapaModel.Y = y;
     }
