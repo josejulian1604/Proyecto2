@@ -46,6 +46,7 @@ public class MapaController {
                 System.out.println("aliados: "+MapaModel.aliados);
                 createMapeable(0, "10");
                 MapaModel.mapa.addMapeable();
+                System.out.println("Contador Aliados: "+ MapaModel.aliados);
             }
         }
     }
@@ -67,8 +68,8 @@ public class MapaController {
                 return;
             }
         }
-        System.out.println("Voy aqui");
-        System.out.println("X: " + x+" Y: "+y);
+        //System.out.println("Voy aqui");
+        //System.out.println("X: " + x+" Y: "+y);
         MapaModel.X = x;
         MapaModel.Y = y;
     }
