@@ -23,6 +23,7 @@ public class MapaController {
         for(int i = 0; i < MapaModel.OBJECTS; i++) {
             if(i < MapaModel.OBJECTS / 2) {
                 createMapeable(0, "" + i);
+                MapaModel.aliados++;
             }else {
                 createMapeable(1, "" + i);
             }
@@ -31,6 +32,7 @@ public class MapaController {
 
     public static void createMapeable(int typeMapeable, String name) {
         verifyPositions();
+        System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWW");
         Mapeable m = factory.createMapeable(typeMapeable, MapaModel.X, MapaModel.Y, name);
         MapaModel.objetosMapeables.add(m);
         MapaModel.player.agregarObservador(m);
@@ -40,13 +42,16 @@ public class MapaController {
         if(MapaModel.turno % 5 == 0) { // ENEMIGO
             createMapeable(1, "x");
             MapaModel.mapa.addMapeable();
+            if(MapaModel.aliados < MapaModel.OBJECTS / 2) {
+                createMapeable(0, "10");
+            }
         }
     }
 
     // POSITION VERIFICATION #######################################################################
     public static void verifyPositions() {
-        int x = new Random().nextInt(MapaView.CASILLAS - 1); // NECESITA CAMBIOS: FORMAR EL RANDOM Y VERIFICAR QUE LA POSICION NO
-        int y = new Random().nextInt(MapaView.CASILLAS - 1); // HAYA SIDO TOMADA
+        int x = new Random().nextInt(MapaView.CASILLAS - 1); 
+        int y = new Random().nextInt(MapaView.CASILLAS - 1); 
 
         if(x == MapaModel.player.xPos & y == MapaModel.player.yPos) {
             verifyPositions();
@@ -62,37 +67,49 @@ public class MapaController {
         MapaModel.Y = y;
     }
 
+    public static void verifyAliados() {
+        for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
+            if(MapaModel.objetosMapeables.get(i).getClass().getName() == "Aliado") {
+                Aliado aliado = (Aliado)MapaModel.objetosMapeables.get(i);
+                if(aliado.closePlayer()) {
+                    MapaModel.mapa.setVisibilityTrue(i);
+                }else if(!aliado.closePlayer() & MapaModel.mapa.botonesMapeables.get(i).isVisible()) {
+                    MapaModel.mapa.setVisibilityFalse(i);
+                }
+            }
+        }
+    }
+
     // MOVING METHODS #####################################################################
-    public static ArrayList<Integer> movePlayer(boolean upDown, int moveSize, int direction) {
-        ArrayList<Integer> indices;
+    public static void movePlayer(boolean upDown, int moveSize, int direction) {
         MapaModel.turno++;
         if(upDown) {
-            indices = interactuar();
+            interactuar();
             MapaModel.player.yPos += moveSize;
             MapaModel.player.notificarObservadores();
             addMapeable();
         }else{
-            indices = interactuar();
+            interactuar();
             MapaModel.player.xPos += moveSize;
             MapaModel.player.notificarObservadores();
             addMapeable();
         }
+        //verifyAliados();
         MapaModel.player.direction = direction;
-        return indices;
     }
 
-    public static ArrayList<Integer> interactuar() {
-        ArrayList<Integer> indices = new ArrayList<Integer>();
+    public static void interactuar() {
         for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
             Mapeable m = MapaModel.objetosMapeables.get(i);
             if(m.interactuar(MapaModel.player)) {
                 MapaModel.player.eliminarObservador(m);
                 MapaModel.objetosMapeables.remove(m);
                 MapaModel.mapa.removeButton(i);
-                indices.add(i);
+                if(MapaModel.objetosMapeables.get(i).getClass().getName() == "Aliado") {
+                    MapaModel.aliados--;
+                }
             }
         }
-        return indices;
     }
 
     public static int atacarEnemigo() {

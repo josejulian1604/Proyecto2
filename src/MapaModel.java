@@ -8,9 +8,11 @@ public class MapaModel {
     public static ArrayList<Mapeable> objetosMapeables;
     public static MapaView mapa;
     public static int turno;
+    public static int aliados;
     
     public MapaModel() {
         turno = 0;
+        aliados = 0;
         mapa = new MapaView();
     }
 }

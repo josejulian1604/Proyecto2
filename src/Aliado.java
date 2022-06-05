@@ -21,4 +21,12 @@ public class Aliado extends Mapeable {
         playerX = newX;
         playerY = newY;
     }
+
+    public boolean closePlayer() {
+        if((yPos + 1 == playerY || yPos + 2 == playerY) & xPos == playerX) return true; // CASILLAS ABAJO
+        else if((yPos - 1 == playerY || yPos - 2 == playerY) & xPos == playerX) return true; // CASILLAS ARRIBA
+        else if(yPos == playerY & (xPos + 1 == playerX || xPos + 2 == playerX)) return true; // CASILLAS DERECHA
+        else if(yPos == playerY & (xPos - 1 == playerX || xPos - 2 == playerX)) return true; // CASILLAS IZQUIERDA
+        return false;
+    }
 }

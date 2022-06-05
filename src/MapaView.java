@@ -55,7 +55,7 @@ public class MapaView extends JFrame implements KeyListener{
             mapeable.setText(m.name);
             if(m.getClass().getName() == "Aliado") { 
                 mapeable.setBackground(Color.GREEN);
-                mapeable.setVisible(true);
+                mapeable.setVisible(true); // CAMBIAR A FALSE
             }else {
                 mapeable.setBackground(Color.RED);
                 mapeable.setVisible(true);
@@ -76,7 +76,7 @@ public class MapaView extends JFrame implements KeyListener{
         mapeable.setText(m.name);
         if(m.getClass().getName() == "Aliado") { 
             mapeable.setBackground(Color.GREEN);
-            mapeable.setVisible(true);
+            mapeable.setVisible(true); // CAMBIAR A FALSE
         }else {
             mapeable.setBackground(Color.RED);
             mapeable.setVisible(true);
@@ -91,6 +91,14 @@ public class MapaView extends JFrame implements KeyListener{
             panel.remove(botonesMapeables.remove(indice));
             panel.repaint();
         }
+    }
+
+    public void setVisibilityTrue(int index) {
+        botonesMapeables.get(index).setVisible(true);
+    }
+
+    public void setVisibilityFalse(int index) {
+        botonesMapeables.get(index).setVisible(false);
     }
 
     //MOVE METHODS######################################################################
