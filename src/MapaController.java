@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MapaController {
@@ -7,25 +6,23 @@ public class MapaController {
 
     MapaController(int x, int y) {
         factory = new MapeableFactory();
-        createPlayer(x, y);
+        createPlayer(x, y, 20);
         spawnMapeables();
-        //printPositions();
         data = new MapaModel();
     }
     
     // CREATION METHODS ####################################################
-    public void createPlayer(int x, int y) {
-        MapaModel.player = factory.createPlayer(x, y);
+    public void createPlayer(int x, int y, int vida) {
+        MapaModel.player = factory.createPlayer(x, y, vida);
         MapaModel.objetosMapeables = factory.createArrayList();
     }
 
     public void spawnMapeables() {
         for(int i = 0; i < MapaModel.OBJECTS; i++) {
             if(i < MapaModel.OBJECTS / 2) {
-                createMapeable(0, "" + i);
-                MapaModel.aliados++;
+                createMapeable(0, "A");
             }else {
-                createMapeable(1, "" + i);
+                createMapeable(1, "E");
             }
         }
     }
@@ -39,14 +36,12 @@ public class MapaController {
     }
 
     public static void addMapeable() {
-        if(MapaModel.turno % 5 == 0) { // ENEMIGO
-            createMapeable(1, "x");
+        if(MapaModel.turno % 7 == 0) { // ENEMIGO
+            createMapeable(1, "E");
             MapaModel.mapa.addMapeable();
-            if(MapaModel.aliados < MapaModel.OBJECTS / 2) {
-                System.out.println("aliados: "+MapaModel.aliados);
-                createMapeable(0, "10");
+            if(countAliados() < MapaModel.OBJECTS / 2) {
+                createMapeable(0, "A");
                 MapaModel.mapa.addMapeable();
-                System.out.println("Contador Aliados: "+ MapaModel.aliados);
             }
         }
     }
@@ -56,20 +51,16 @@ public class MapaController {
         int x = new Random().nextInt(MapaView.CASILLAS - 1); 
         int y = new Random().nextInt(MapaView.CASILLAS - 1); 
 
-        //System.out.println("Voy aqui");
         if(x == MapaModel.player.xPos & y == MapaModel.player.yPos) {
             verifyPositions();
             return;
         }
-        //System.out.println("Llego al for");
         for (Mapeable m : MapaModel.objetosMapeables) {
             if(x == m.xPos & y == m.yPos) {
                 verifyPositions();
                 return;
             }
         }
-        //System.out.println("Voy aqui");
-        //System.out.println("X: " + x+" Y: "+y);
         MapaModel.X = x;
         MapaModel.Y = y;
     }
@@ -87,8 +78,16 @@ public class MapaController {
         }
     }
 
+    public static int countAliados() {
+        int counter = 0;
+        for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
+            if(MapaModel.objetosMapeables.get(i).getClass().getName() == "Aliado") counter++;
+        }return counter;
+    }
+
     // MOVING METHODS #####################################################################
     public static void movePlayer(boolean upDown, int moveSize, int direction) {
+        if(MapaModel.player.vida <= 0) MapaModel.mapa.closeWindow();
         MapaModel.turno++;
         if(upDown) {
             interactuar();
@@ -101,7 +100,7 @@ public class MapaController {
             MapaModel.player.notificarObservadores();
             addMapeable();
         }
-        //verifyAliados();
+        verifyAliados(); 
         MapaModel.player.direction = direction;
     }
 
@@ -112,9 +111,6 @@ public class MapaController {
                 MapaModel.player.eliminarObservador(m);
                 MapaModel.objetosMapeables.remove(m);
                 MapaModel.mapa.removeButton(i);
-                if(MapaModel.objetosMapeables.get(i).getClass().getName() == "Aliado") {
-                    MapaModel.aliados--;
-                }
             }
         }
     }

@@ -5,8 +5,8 @@ public class MapeableFactory {
     
     MapeableFactory(){}
 
-    Player createPlayer(int x, int y) {
-        return new Player(x, y);
+    Player createPlayer(int x, int y, int vida) {
+        return new Player(x, y, vida);
     }
     
     Mapeable createMapeable(int type, int x, int y, String name) {
