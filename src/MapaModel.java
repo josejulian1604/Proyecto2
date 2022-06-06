@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class MapaModel {
-    public static int X;
-    public static int Y;
+    public static int X; // se utiliza para la verificacion de las posiciones
+    public static int Y; // de los mapeables
     public static final int OBJECTS = 20;
     public static Player player;
     public static ArrayList<Mapeable> objetosMapeables;

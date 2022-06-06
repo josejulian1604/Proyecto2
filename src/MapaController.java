@@ -6,7 +6,7 @@ public class MapaController {
 
     MapaController(int x, int y) {
         factory = new MapeableFactory();
-        createPlayer(x, y, 20);
+        createPlayer(x, y, 15);
         spawnMapeables();
         data = new MapaModel();
     }
@@ -27,6 +27,7 @@ public class MapaController {
         }
     }
 
+    // utiliza el metodo factory para crear mapeables a lo largo de la partida
     public static void createMapeable(int typeMapeable, String name) {
         verifyPositions();
         Mapeable m = factory.createMapeable(typeMapeable, MapaModel.X, MapaModel.Y, name);
@@ -34,7 +35,8 @@ public class MapaController {
         MapaModel.player.agregarObservador(m);
         
     }
-
+    
+    // Agrega objetos mapeables despues de cierta cantidad de turnos
     public static void addMapeable() {
         if(MapaModel.turno % 7 == 0) { // ENEMIGO
             createMapeable(1, "E");
@@ -47,6 +49,8 @@ public class MapaController {
     }
 
     // POSITION VERIFICATION #######################################################################
+    
+    // verifica que el mapeable por crear no aparezca encima de otro ya creado
     public static void verifyPositions() {
         int x = new Random().nextInt(MapaView.CASILLAS - 1); 
         int y = new Random().nextInt(MapaView.CASILLAS - 1); 
@@ -65,6 +69,7 @@ public class MapaController {
         MapaModel.Y = y;
     }
 
+    // Llama al metodo de hacer visible a los aliados cuando corresponde
     public static void verifyAliados() {
         for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
             if(MapaModel.objetosMapeables.get(i).getClass().getName() == "Aliado") {
@@ -77,7 +82,8 @@ public class MapaController {
             }
         }
     }
-
+    
+    //Cuenta cuantos aliados hay en partida
     public static int countAliados() {
         int counter = 0;
         for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
@@ -104,6 +110,7 @@ public class MapaController {
         MapaModel.player.direction = direction;
     }
 
+    // elimina los objetos que lleguen a la misma posicion que la del jugador
     public static void interactuar() {
         for(int i = 0; i < MapaModel.objetosMapeables.size(); i++) {
             Mapeable m = MapaModel.objetosMapeables.get(i);
@@ -123,12 +130,5 @@ public class MapaController {
                 return i;
             }
         }return -1;
-    }
-
-    public static void printPositions() {
-        System.out.println("Player:  X: " + MapaModel.player.xPos + " Y: " + MapaModel.player.yPos);
-        for(Mapeable m : MapaModel.objetosMapeables) {
-            System.out.println(m.name + " X: " + m.xPos + " Y: " + m.yPos);
-        }
     }
 }

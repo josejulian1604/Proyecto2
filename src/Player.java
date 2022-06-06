@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-
+/*
+ *       Utiliza patron Observable
+ */
 public class Player{
     public int xPos;
     public int yPos;

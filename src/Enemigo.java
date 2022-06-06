@@ -28,7 +28,7 @@ public class Enemigo extends Mapeable {
             verifyLastMove();
         }
     }
-
+    // Se utiliza para que el movimiento del enemigo sea en zig-zag
     private void verifyLastMove() {
         if(xPos == playerX & yPos != playerY) {
             currentMoveX = false;
@@ -37,7 +37,7 @@ public class Enemigo extends Mapeable {
             currentMoveX = true;
         }
     }
-
+    //Quita vida del player si estan en la misma posicion
     public boolean interactuar(Player p) {
         if(xPos == playerX & yPos == playerY) {
             p.vida--;

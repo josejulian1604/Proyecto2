@@ -35,6 +35,8 @@ public class MapaView extends JFrame implements KeyListener{
     }
 
     //SPAWN & REMOVE METHODS###########################################################
+    
+    // Crea el boton del jugador y lo agrega en el panel
     public void spawnPlayer() {
         int xSize = WIDTH / CASILLAS;
         int ySize = HEIGHT / CASILLAS;
@@ -45,7 +47,7 @@ public class MapaView extends JFrame implements KeyListener{
         panel.add(playerButton);
         panel.repaint();
     }
-
+    // Crea los botones de los objetos mapeables al inicio de la partida
     public void spawnMapeable() {
         int xSize = WIDTH / CASILLAS;
         int ySize = HEIGHT / CASILLAS;
@@ -66,6 +68,8 @@ public class MapaView extends JFrame implements KeyListener{
         }
     }
 
+    // crea un boton para representar a un mapeable y lo agrega a la pantalla
+    // en cualquier momento de la partida
     public void addMapeable() {
         int xSize = WIDTH / CASILLAS;
         int ySize = HEIGHT / CASILLAS;
@@ -92,11 +96,11 @@ public class MapaView extends JFrame implements KeyListener{
             panel.repaint();
         }
     }
-
+    // Se utiliza para poner el boton del aliado visible
     public void setVisibilityTrue(int index) {
         botonesMapeables.get(index).setVisible(true);
     }
-
+    // Se utiliza para poner el boton del aliado no visible
     public void setVisibilityFalse(int index) {
         botonesMapeables.get(index).setVisible(false);
     }
@@ -150,18 +154,12 @@ public class MapaView extends JFrame implements KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {}
 
+    // actualiza la vida del jugador
     public void refreshText() {
         playerButton.setText("" + MapaModel.player.vida);
-
     }
 
     public void closeWindow() {
         this.dispose();
-    }
-
-    public void print() {
-        for(int i = 0; i < botonesMapeables.size(); i++) {
-            System.out.println(botonesMapeables.get(i).getText());
-        }
     }
 }

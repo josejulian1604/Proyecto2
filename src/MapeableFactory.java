@@ -1,4 +1,3 @@
-import javax.swing.JButton;
 import java.util.ArrayList;
 
 public class MapeableFactory {
@@ -21,8 +20,5 @@ public class MapeableFactory {
 
     ArrayList<Mapeable> createArrayList() {
         return new ArrayList<Mapeable>();
-    }
-    JButton createButton() { //que reciba un numero para que cree un boton con su color respectivo
-        return new JButton();
     }
 }

@@ -22,6 +22,7 @@ public class Aliado extends Mapeable {
         playerY = newY;
     }
 
+    // verifica si el jugador esta a 2 casillas o menos de distancia
     public boolean closePlayer() {
         if((yPos + 1 == playerY || yPos + 2 == playerY) & xPos == playerX) return true; // CASILLAS ABAJO
         else if((yPos - 1 == playerY || yPos - 2 == playerY) & xPos == playerX) return true; // CASILLAS ARRIBA
